@@ -20,8 +20,8 @@ seamless integration with existing systems that handle payment orders.
 
 ### Generating Direct Debit Documents
 
-To generate a Direct Debit XML document from a payment order represented as a Go struct, use the `ToDocument` method
-provided by the `Order` struct:
+To generate a Direct Debit XML document from a payment order represented as a Go struct, use the `ToDocument` function
+provided by the `painxml` package:
 
 ```go
 order := order.Order{
@@ -29,7 +29,7 @@ ExecutionDate: time.Now(),
 // Populate order fields...
 }
 
-document, err := order.ToDocument()
+document, err := painxml.ToDocument(order)
 if err != nil {
 // Handle error
 }
@@ -38,8 +38,8 @@ if err != nil {
 
 ### Parsing Direct Debit Documents
 
-To parse a Direct Debit XML document back into a payment order represented as a Go struct, use the ToOrder method
-provided by the DirectDebitDocument struct:
+To parse a Direct Debit XML document back into a payment order represented as a Go struct, use the ToOrder function
+provided by the painxml package:
 
 ```go
 xmlData := []byte("<xml>...</xml>") // Replace with actual XML data
@@ -49,54 +49,13 @@ if err != nil {
 // Handle error
 }
 
-order, err := doc.ToOrder()
+order, err := painxml.ToOrder(doc)
 if err != nil {
 // Handle error
 }
 // Use parsed payment order...
 ```
 
-## Example
-
-```go
-package main
-
-import (
-	"fmt"
-	"github.com/lance-free/pain-xml/order"
-	"github.com/lance-free/pain-xml/document"
-	"time"
-)
-
-func main() {
-	// Create a sample payment order
-	order := order.Order{
-		ExecutionDate: time.Now(),
-		// Populate order fields...
-	}
-
-	// Convert payment order to XML document
-	document, err := order.ToDocument()
-	if err != nil {
-		fmt.Println("Error generating XML document:", err)
-		return
-	}
-
-	// Use generated XML document...
-	fmt.Println("Generated XML document:", document)
-
-	// Parse XML document back into payment order
-	parsedOrder, err := document.ToOrder()
-	if err != nil {
-		fmt.Println("Error parsing XML document:", err)
-		return
-	}
-
-	// Use parsed payment order...
-	fmt.Println("Parsed payment order:", parsedOrder)
-}
-```
-
 ## License
 
-This package is licensed under the MIT License. See the [LICENSE](LICENSE) file for more information.
+This package is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.

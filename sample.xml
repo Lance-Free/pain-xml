@@ -1,0 +1,154 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pain.008.001.08">
+	<CstmrDrctDbtInitn>
+		<GrpHdr>
+			<MsgId>pain.008.001.08</MsgId>
+			<CreDtTm>2024-02-02T16:13:44</CreDtTm>
+			<NbOfTxs>3</NbOfTxs>
+			<CtrlSum>0.10</CtrlSum>
+			<InitgPty>
+				<Nm>creator of file</Nm>
+			</InitgPty>
+		</GrpHdr>
+		<PmtInf>
+			<PmtInfId>Incasso SDD123</PmtInfId>
+			<PmtMtd>DD</PmtMtd>
+			<NbOfTxs>3</NbOfTxs>
+			<CtrlSum>0.10</CtrlSum>
+			<PmtTpInf>
+				<SvcLvl>
+					<Cd>SEPA</Cd>
+				</SvcLvl>
+				<LclInstrm>
+					<Cd>CORE</Cd>
+				</LclInstrm>
+				<SeqTp>RCUR</SeqTp>
+			</PmtTpInf>
+			<ReqdColltnDt>2024-03-22</ReqdColltnDt>
+			<Cdtr>
+				<Nm>Account Holder name</Nm>
+				<PstlAdr>
+					<TwnNm>City</TwnNm>
+					<Ctry>NL</Ctry>
+				</PstlAdr>
+			</Cdtr>
+			<CdtrAcct>
+				<Id>
+					<IBAN>NL51ABNA0987654321</IBAN>
+				</Id>
+			</CdtrAcct>
+			<CdtrAgt>
+				<FinInstnId>
+					<BICFI>ABNANL2A</BICFI>
+				</FinInstnId>
+			</CdtrAgt>
+			<CdtrSchmeId>
+				<Id>
+					<PrvtId>
+						<Othr>
+							<Id>NL11ZZZ170987080000</Id>
+							<SchmeNm>
+								<Prtry>SEPA</Prtry>
+							</SchmeNm>
+						</Othr>
+					</PrvtId>
+				</Id>
+			</CdtrSchmeId>
+			<DrctDbtTxInf>
+				<PmtId>
+					<EndToEndId>2 822380</EndToEndId>
+				</PmtId>
+				<InstdAmt Ccy="EUR">0.05</InstdAmt>
+				<DrctDbtTx>
+					<MndtRltdInf>
+						<MndtId>Deb0445-A</MndtId>
+						<DtOfSgntr>2019-05-31</DtOfSgntr>
+					</MndtRltdInf>
+				</DrctDbtTx>
+				<DbtrAgt>
+					<FinInstnId>
+						<BICFI>RABONL2U</BICFI>
+					</FinInstnId>
+				</DbtrAgt>
+				<Dbtr>
+					<Nm>name</Nm>
+					<PstlAdr>
+						<TwnNm>City</TwnNm>
+						<Ctry>NL</Ctry>
+					</PstlAdr>
+				</Dbtr>
+				<DbtrAcct>
+					<Id>
+						<IBAN>NL44RABO0123456789</IBAN>
+					</Id>
+				</DbtrAcct>
+				<RmtInf>
+					<Ustrd>invoice1 free text field</Ustrd>
+				</RmtInf>
+			</DrctDbtTxInf>
+			<DrctDbtTxInf>
+				<PmtId>
+					<EndToEndId>3 822381</EndToEndId>
+				</PmtId>
+				<InstdAmt Ccy="EUR">0.02</InstdAmt>
+				<DrctDbtTx>
+					<MndtRltdInf>
+						<MndtId>Deb0769-B</MndtId>
+						<DtOfSgntr>2020-01-22</DtOfSgntr>
+					</MndtRltdInf>
+				</DrctDbtTx>
+				<DbtrAgt>
+					<FinInstnId>
+						<BICFI>INGBNL2A</BICFI>
+					</FinInstnId>
+				</DbtrAgt>
+				<Dbtr>
+					<Nm>name1</Nm>
+				</Dbtr>
+				<DbtrAcct>
+					<Id>
+						<IBAN>NL80INGB0789123456</IBAN>
+					</Id>
+				</DbtrAcct>
+				<RmtInf>
+					<Ustrd>invoice2</Ustrd>
+				</RmtInf>
+			</DrctDbtTxInf>
+			<DrctDbtTxInf>
+				<PmtId>
+					<EndToEndId>4 822382</EndToEndId>
+				</PmtId>
+				<InstdAmt Ccy="EUR">0.03</InstdAmt>
+				<DrctDbtTx>
+					<MndtRltdInf>
+						<MndtId>Deb0777-C</MndtId>
+						<DtOfSgntr>2021-08-03</DtOfSgntr>
+					</MndtRltdInf>
+				</DrctDbtTx>
+				<DbtrAgt>
+					<FinInstnId>
+						<BICFI>SNSBNL2A</BICFI>
+					</FinInstnId>
+				</DbtrAgt>
+				<Dbtr>
+					<Nm>Holding BV</Nm>
+					<PstlAdr>
+						<StrtNm>STREET</StrtNm>
+						<PstCd>POSTALCODE</PstCd>
+						<TwnNm>CITY</TwnNm>
+						<Ctry>NL</Ctry>
+					</PstlAdr>
+				</Dbtr>
+				<DbtrAcct>
+					<Id>
+						<IBAN>NL54SNSB0654987321</IBAN>
+					</Id>
+				</DbtrAcct>
+				<RmtInf>
+					<Ustrd>12345  monthly free</Ustrd>
+				</RmtInf>
+			</DrctDbtTxInf>
+
+		</PmtInf>
+	</CstmrDrctDbtInitn>
+</Document>

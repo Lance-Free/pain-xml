@@ -4,6 +4,7 @@ import (
 	"encoding/xml"
 	"fmt"
 	"github.com/lance-free/pain-xml/order"
+	"strconv"
 	"time"
 )
 
@@ -183,6 +184,10 @@ type DirectDebit struct {
 func (document DirectDebit) ToOrder() (order.Order, error) {
 	var transactions []order.Transaction
 	for _, t := range document.CustomerDirectDebitInitiation.PaymentInformation.DirectDebitTransactionInformation {
+		amount, err := strconv.ParseFloat(t.InstigatedAmount.Text, 64)
+		if err != nil {
+			return order.Order{}, fmt.Errorf("failed to parse transaction amount: %w", err)
+		}
 		transactions = append(transactions, order.Transaction{
 			Name:       t.PaymentID.EndToEndID,
 			Street:     t.Debtor.PostalAddress.StreetName,
@@ -192,7 +197,7 @@ func (document DirectDebit) ToOrder() (order.Order, error) {
 			IBAN:       t.DebtorAccount.IBAN.IBAN,
 			BIC:        t.DebtorAgent.FinancialInstitutionIdentification.BICFI,
 			Currency:   t.InstigatedAmount.Currency,
-			Amount:     0,
+			Amount:     amount,
 		})
 	}
 

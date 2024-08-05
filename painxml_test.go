@@ -5,6 +5,7 @@ import (
 	"encoding/xml"
 	"github.com/lance-free/pain-xml/document"
 	"github.com/lance-free/pain-xml/order"
+	"github.com/shopspring/decimal"
 	"testing"
 	"time"
 )
@@ -34,18 +35,21 @@ func TestToDocument(t *testing.T) {
 		ExecutionDate: time.Now(),
 		Transactions: []order.Transaction{
 			{
-				Name:       "John Doe",
-				Street:     "Main Street 1",
-				PostalCode: "12345",
-				Place:      "Small Town",
-				Country:    "DE",
-				IBAN:       "DE12345678901234567890",
-				BIC:        "GENODEF1M01",
-				Currency:   "EUR",
-				Amount:     100.00,
+				Creditor: order.Party{
+
+					Name:       "John Doe",
+					Street:     "Main Street 1",
+					PostalCode: "12345",
+					Place:      "Small Town",
+					Country:    "DE",
+					IBAN:       "DE12345678901234567890",
+					BIC:        "GENODEF1M01",
+				},
+				Currency: "EUR",
+				Amount:   decimal.NewFromInt(100),
 			},
 		},
-		Creditor: order.Creditor{
+		Debtor: order.Party{
 			Name:       "Jane Doe",
 			Street:     "Main Street 2",
 			PostalCode: "54321",

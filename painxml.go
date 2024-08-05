@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"github.com/lance-free/pain-xml/document"
 	"github.com/lance-free/pain-xml/order"
+	"github.com/shopspring/decimal"
 	"math/big"
-	"strconv"
 	"time"
 )
 
@@ -17,20 +17,18 @@ import (
 func ToOrder(document document.DirectDebit) (order.Order, error) {
 	var transactions []order.Transaction
 	for _, t := range document.CustomerDirectDebitInitiation.PaymentInformation.DirectDebitTransactionInformation {
-		amount, err := strconv.ParseFloat(t.InstigatedAmount.Text, 64)
-		if err != nil {
-			return order.Order{}, fmt.Errorf("failed to parse transaction amount: %w", err)
-		}
 		transactions = append(transactions, order.Transaction{
-			Name:       t.PaymentID.EndToEndID,
-			Street:     t.Debtor.PostalAddress.StreetName,
-			PostalCode: t.Debtor.PostalAddress.PostalCode,
-			Place:      t.Debtor.PostalAddress.TownName,
-			Country:    t.Debtor.PostalAddress.Country,
-			IBAN:       t.DebtorAccount.ID.IBAN,
-			BIC:        t.DebtorAgent.FinancialInstitutionIdentification.BICFI,
-			Currency:   t.InstigatedAmount.Currency,
-			Amount:     amount,
+			Creditor: order.Party{
+				Name:       t.PaymentID.EndToEndID,
+				Street:     t.Debtor.PostalAddress.StreetName,
+				PostalCode: t.Debtor.PostalAddress.PostalCode,
+				Place:      t.Debtor.PostalAddress.TownName,
+				Country:    t.Debtor.PostalAddress.Country,
+				IBAN:       t.DebtorAccount.ID.IBAN,
+				BIC:        t.DebtorAgent.FinancialInstitutionIdentification.BICFI,
+			},
+			Currency: t.InstigatedAmount.Currency,
+			Amount:   t.InstigatedAmount.Text,
 		})
 	}
 
@@ -41,7 +39,7 @@ func ToOrder(document document.DirectDebit) (order.Order, error) {
 	return order.Order{
 		ExecutionDate: executionDate,
 		Transactions:  transactions,
-		Creditor: order.Creditor{
+		Debtor: order.Party{
 			Name:       document.CustomerDirectDebitInitiation.PaymentInformation.Creditor.Name,
 			Street:     document.CustomerDirectDebitInitiation.PaymentInformation.Creditor.PostalAddress.StreetName,
 			PostalCode: document.CustomerDirectDebitInitiation.PaymentInformation.Creditor.PostalAddress.PostalCode,
@@ -73,11 +71,11 @@ func idGenerator() (string, error) {
 
 // controlSum calculates the sum of amounts in the given transactions slice and returns a formatted string with two decimal places.
 func controlSum(transactions []order.Transaction) string {
-	var sum float64
+	sum := decimal.Zero
 	for _, t := range transactions {
-		sum += t.Amount
+		sum = sum.Add(t.Amount)
 	}
-	return fmt.Sprintf("%.2f", sum)
+	return sum.StringFixed(2)
 }
 
 // ToDocument converts an order to a document.DirectDebit and returns it.
@@ -87,36 +85,36 @@ func ToDocument(order order.Order) (document.DirectDebit, error) {
 	var transactions []document.DirectDebitTransactionInformation
 	for _, t := range order.Transactions {
 		transactions = append(transactions, document.DirectDebitTransactionInformation{
-			PaymentID: document.PaymentID{EndToEndID: t.Name},
+			PaymentID: document.PaymentID{EndToEndID: t.Creditor.Name},
 			InstigatedAmount: document.InstigatedAmount{
 				Currency: t.Currency,
-				Text:     fmt.Sprintf("%.2f", t.Amount),
+				Text:     t.Amount,
 			},
 			DirectDebitTransaction: document.DirectDebitTransaction{
 				MandateRelatedInformation: document.MandateRelatedInformation{
-					MandateID:       order.Creditor.IBAN,
+					MandateID:       order.Debtor.IBAN,
 					DateOfSignature: order.ExecutionDate.Format("2006-01-02"),
 				},
 			},
 			DebtorAgent: document.DebtorAgent{
 				FinancialInstitutionIdentification: document.FinancialInstitutionIdentification{
-					BICFI: order.Creditor.BIC,
+					BICFI: order.Debtor.BIC,
 				},
 			},
 			Debtor: document.Debtor{
-				Name: t.Name,
+				Name: t.Creditor.Name,
 				PostalAddress: document.PostalAddress{
-					TownName:   t.Place,
-					Country:    t.Country,
-					StreetName: t.Street,
-					PostalCode: t.PostalCode,
+					TownName:   t.Creditor.Place,
+					Country:    t.Creditor.Country,
+					StreetName: t.Creditor.Street,
+					PostalCode: t.Creditor.PostalCode,
 				},
 			},
 			DebtorAccount: document.DebtorAccount{
-				ID: document.IBAN{IBAN: t.IBAN},
+				ID: document.IBAN{IBAN: t.Creditor.IBAN},
 			},
 			RemittanceInformation: document.RemittanceInformation{
-				Unstructured: t.Name,
+				Unstructured: t.Creditor.Name,
 			},
 		})
 	}
@@ -138,7 +136,7 @@ func ToDocument(order order.Order) (document.DirectDebit, error) {
 				CreationDateTime:     order.ExecutionDate.Format("2006-01-02T15:04:05"),
 				NumberOfTransactions: numberOfTransactions,
 				ControlSum:           controlSum(order.Transactions),
-				InitiatingParty:      document.InitiatingParty{Name: order.Creditor.Name},
+				InitiatingParty:      document.InitiatingParty{Name: order.Debtor.Name},
 			},
 			PaymentInformation: document.PaymentInformation{
 				PaymentInformationId: "Incasso SDD" + paymentInformationId,
@@ -152,27 +150,27 @@ func ToDocument(order order.Order) (document.DirectDebit, error) {
 				},
 				RequestedCollectionDate: order.ExecutionDate.Format("2006-01-02"),
 				Creditor: document.Creditor{
-					Name: order.Creditor.Name,
+					Name: order.Debtor.Name,
 					PostalAddress: document.PostalAddress{
-						TownName:   order.Creditor.Place,
-						Country:    order.Creditor.Country,
-						StreetName: order.Creditor.Street,
-						PostalCode: order.Creditor.PostalCode,
+						TownName:   order.Debtor.Place,
+						Country:    order.Debtor.Country,
+						StreetName: order.Debtor.Street,
+						PostalCode: order.Debtor.PostalCode,
 					},
 				},
 				CreditorAccount: document.CreditorAccount{
-					ID: document.IBAN{IBAN: order.Creditor.IBAN},
+					ID: document.IBAN{IBAN: order.Debtor.IBAN},
 				},
 				CreditorAgent: document.CreditorAgent{
 					FinancialInstitutionIdentification: document.FinancialInstitutionIdentification{
-						BICFI: order.Creditor.BIC,
+						BICFI: order.Debtor.BIC,
 					},
 				},
 				CreditorSchemeIdentification: document.CreditorSchemeIdentification{
 					ID: document.ID{
 						PrivateIdentification: document.PrivateIdentification{
 							Other: document.Other{
-								ID:         order.Creditor.IBAN,
+								ID:         order.Debtor.IBAN,
 								SchemeName: document.SchemeName{Proprietary: "SEPA"},
 							},
 						},

@@ -2,6 +2,7 @@ package document
 
 import (
 	"encoding/xml"
+	"github.com/shopspring/decimal"
 )
 
 // InitiatingParty represents the party initiating the order.
@@ -82,8 +83,8 @@ type CreditorSchemeIdentification struct {
 
 // InstigatedAmount represents the amount of an instigated order, including the currency and the textual representation.
 type InstigatedAmount struct {
-	Currency string `xml:"Ccy,attr"`
-	Text     string `xml:",chardata"`
+	Currency string          `xml:"Ccy,attr"`
+	Text     decimal.Decimal `xml:",chardata"`
 }
 
 // PaymentID represents a payment identifier.

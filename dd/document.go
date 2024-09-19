@@ -129,3 +129,10 @@ type DirectDebit struct {
 	Xmlns                         string                        `xml:"xmlns,attr"`
 	CustomerDirectDebitInitiation CustomerDirectDebitInitiation `xml:"CstmrDrctDbtInitn"`
 }
+
+func NewDocument(customerDirectDebitInitiation CustomerDirectDebitInitiation) DirectDebit {
+	return DirectDebit{
+		Xmlns:                         "urn:iso:std:iso:20022:tech:xsd:pain.008.001.02",
+		CustomerDirectDebitInitiation: customerDirectDebitInitiation,
+	}
+}

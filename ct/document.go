@@ -63,3 +63,10 @@ type Amount struct {
 type RemittanceInformation struct {
 	Unstructured string `xml:"Ustrd"` // Unstructured contains free-form remittance information.
 }
+
+func NewDocument(customerCreditTransferInitiation CustomerCreditTransferInitiation) Document {
+	return Document{
+		XMLNS:                            "urn:iso:std:iso:20022:tech:xsd:pain.001.001.03",
+		CustomerCreditTransferInitiation: customerCreditTransferInitiation,
+	}
+}

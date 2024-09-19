@@ -1,55 +1,20 @@
-package document
+package dd
 
 import (
 	"encoding/xml"
+	"github.com/lance-free/pain-xml/pain"
 	"github.com/shopspring/decimal"
 )
-
-// InitiatingParty represents the party initiating the order.
-type InitiatingParty struct {
-	Name string `xml:"Nm"`
-}
-
-// GroupHeader represents the header information of a group in a Direct Debit document.
-type GroupHeader struct {
-	MessageID            string          `xml:"MsgId"`
-	CreationDateTime     string          `xml:"CreDtTm"`
-	NumberOfTransactions string          `xml:"NbOfTxs"`
-	ControlSum           string          `xml:"CtrlSum"`
-	InitiatingParty      InitiatingParty `xml:"InitgPty"`
-}
-
-// ServiceLevel represents the service level for a payment.
-type ServiceLevel struct {
-	Code string `xml:"Cd"`
-}
 
 // LocalInstrument represents a local instrument code used in the payment type information.
 type LocalInstrument struct {
 	Code string `xml:"Cd"`
 }
 
-// PaymentTypeInformation represents the type information for a payment.
-type PaymentTypeInformation struct {
-	ServiceLevel    ServiceLevel    `xml:"SvcLvl"`
-	LocalInstrument LocalInstrument `xml:"LclInstrm"`
-	SequenceType    string          `xml:"SeqTp"`
-}
-
 // Creditor represents a creditor in a payment order.
 type Creditor struct {
 	Name          string        `xml:"Nm"`
 	PostalAddress PostalAddress `xml:"PstlAdr"`
-}
-
-// IBAN represents an International Bank Account Number.
-type IBAN struct {
-	IBAN string `xml:"IBAN"`
-}
-
-// CreditorAccount represents the creditor's bank account information.
-type CreditorAccount struct {
-	ID IBAN `xml:"Id"`
 }
 
 // CreditorAgent represents the creditor agent information in a direct debit order.
@@ -87,11 +52,6 @@ type InstigatedAmount struct {
 	Text     decimal.Decimal `xml:",chardata"`
 }
 
-// PaymentID represents a payment identifier.
-type PaymentID struct {
-	EndToEndID string `xml:"EndToEndId"`
-}
-
 // MandateRelatedInformation is a type that represents information related to a mandate.
 type MandateRelatedInformation struct {
 	MandateID       string `xml:"MndtId"`
@@ -127,11 +87,6 @@ type Debtor struct {
 	PostalAddress PostalAddress `xml:"PstlAdr"`
 }
 
-// DebtorAccount represents a debtor's account information, including the IBAN.
-type DebtorAccount struct {
-	ID IBAN `xml:"Id"`
-}
-
 // RemittanceInformation represents the remittance information for a payment order.
 type RemittanceInformation struct {
 	Unstructured string `xml:"Ustrd"`
@@ -139,12 +94,12 @@ type RemittanceInformation struct {
 
 // DirectDebitTransactionInformation represents information about a direct debit order.
 type DirectDebitTransactionInformation struct {
-	PaymentID              PaymentID              `xml:"PmtId"`
+	PaymentID              pain.PaymentID         `xml:"PmtId"`
 	InstigatedAmount       InstigatedAmount       `xml:"InstdAmt"`
 	DirectDebitTransaction DirectDebitTransaction `xml:"DrctDbtTx"`
 	DebtorAgent            DebtorAgent            `xml:"DbtrAgt"`
 	Debtor                 Debtor                 `xml:"Dbtr"`
-	DebtorAccount          DebtorAccount          `xml:"DbtrAcct"`
+	DebtorAccount          pain.Account           `xml:"DbtrAcct"`
 	RemittanceInformation  RemittanceInformation  `xml:"RmtInf"`
 }
 
@@ -153,18 +108,18 @@ type PaymentInformation struct {
 	PaymentInformationId              string                              `xml:"PmtInfId"`
 	PaymentMethod                     string                              `xml:"PmtMtd"`
 	NumberOfTransactions              string                              `xml:"NbOfTxs"`
-	ControlSum                        string                              `xml:"CtrlSum"`
-	PaymentTypeInformation            PaymentTypeInformation              `xml:"PmtTpInf"`
+	ControlSum                        decimal.Decimal                     `xml:"CtrlSum"`
+	PaymentTypeInformation            pain.PaymentTypeInfo                `xml:"PmtTpInf"`
 	RequestedCollectionDate           string                              `xml:"ReqdColltnDt"`
 	Creditor                          Creditor                            `xml:"Cdtr"`
-	CreditorAccount                   CreditorAccount                     `xml:"CdtrAcct"`
+	CreditorAccount                   pain.Account                        `xml:"CdtrAcct"`
 	CreditorAgent                     CreditorAgent                       `xml:"CdtrAgt"`
 	CreditorSchemeIdentification      CreditorSchemeIdentification        `xml:"CdtrSchmeId"`
 	DirectDebitTransactionInformation []DirectDebitTransactionInformation `xml:"DrctDbtTxInf"`
 }
 
 type CustomerDirectDebitInitiation struct {
-	GroupHeader        GroupHeader        `xml:"GrpHdr"`
+	GroupHeader        pain.GroupHeader   `xml:"GrpHdr"`
 	PaymentInformation PaymentInformation `xml:"PmtInf"`
 }
 

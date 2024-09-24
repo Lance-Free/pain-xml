@@ -55,7 +55,7 @@ type CreditTransferTransactionInfo struct {
 
 // Amount represents a monetary value and its associated currency.
 type Amount struct {
-	InstructedAmount InstructedAmount `xml:"InstdAmt,omitempty"` // InstructedAmount specifies a monetary amount and its currency in a transaction.
+	InstigatedAmount pain.InstigatedAmount `xml:"InstdAmt,omitempty"` // InstructedAmount specifies a monetary amount and its currency in a transaction.
 }
 
 // InstructedAmount specifies a monetary amount and its currency in a transaction.

@@ -53,10 +53,15 @@ type CreditTransferTransactionInfo struct {
 	RemittanceInfo  RemittanceInformation `xml:"RmtInf,omitempty"`   // RemittanceInfo contains the remittance details.
 }
 
-// Amount represents the amount of money in a transaction.
+// Amount represents a monetary value and its associated currency.
 type Amount struct {
-	InstructedAmount decimal.Decimal `xml:",chardata"`          // InstructedAmount is the amount of money to be transferred.
-	Currency         string          `xml:"Ccy,attr,omitempty"` // Currency defines the currency of the instructed amount.
+	InstructedAmount InstructedAmount `xml:"InstdAmt,omitempty"` // InstructedAmount specifies a monetary amount and its currency in a transaction.
+}
+
+// InstructedAmount specifies a monetary amount and its currency in a transaction.
+type InstructedAmount struct {
+	Amount   decimal.Decimal `xml:",chardata"` // Amount represents a monetary value and its associated currency.
+	Currency string          `xml:"Ccy,attr"`  // Currency represents the currency in which the monetary amount is specified.
 }
 
 // RemittanceInformation contains remittance details for the transaction.

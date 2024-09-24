@@ -78,3 +78,9 @@ type PaymentID struct {
 	InstructionID string `xml:"InstrId,omitempty"`    // InstructionID is the instruction identifier.
 	EndToEndID    string `xml:"EndToEndId,omitempty"` // EndToEndID is the unique end-to-end transaction identifier.
 }
+
+// InstigatedAmount represents the amount of an instigated order, including the currency and the textual representation.
+type InstigatedAmount struct {
+	Currency string          `xml:"Ccy,attr,omitempty"`
+	Text     decimal.Decimal `xml:",chardata"`
+}

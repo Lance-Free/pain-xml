@@ -46,12 +46,6 @@ type CreditorSchemeIdentification struct {
 	ID ID `xml:"Id,omitempty"`
 }
 
-// InstigatedAmount represents the amount of an instigated order, including the currency and the textual representation.
-type InstigatedAmount struct {
-	Currency string          `xml:"Ccy,attr,omitempty"`
-	Text     decimal.Decimal `xml:",chardata,omitempty"`
-}
-
 // MandateRelatedInformation is a type that represents information related to a mandate.
 type MandateRelatedInformation struct {
 	MandateID       string `xml:"MndtId,omitempty"`
@@ -107,7 +101,7 @@ type DirectDebitTransactionInformation struct {
 type PaymentInformation struct {
 	PaymentInformationId              string                              `xml:"PmtInfId,omitempty"`
 	PaymentMethod                     string                              `xml:"PmtMtd,omitempty"`
-	NumberOfTransactions              string                              `xml:"NbOfTxs,omitempty"`
+	NumberOfTransactions              int                                 `xml:"NbOfTxs,omitempty"`
 	ControlSum                        decimal.Decimal                     `xml:"CtrlSum,omitempty"`
 	PaymentTypeInformation            pain.PaymentTypeInfo                `xml:"PmtTpInf,omitempty"`
 	RequestedCollectionDate           string                              `xml:"ReqdColltnDt,omitempty"`

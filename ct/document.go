@@ -44,19 +44,19 @@ type FinancialInstitutionID struct {
 
 // CreditTransferTransactionInfo contains information about a single credit transfer transaction.
 type CreditTransferTransactionInfo struct {
-	PaymentID       pain.PaymentID        `xml:"PmtId,omitempty"`              // PaymentID contains payment identifiers like instruction ID.
-	PaymentTypeInfo pain.PaymentTypeInfo  `xml:"PmtTpInf,omitempty,omitempty"` // PaymentTypeInfo is optional payment type information.
-	Amount          Amount                `xml:"Amt,omitempty"`                // Amount represents the instructed amount for the transfer.
-	CreditorAgent   FinancialInstitution  `xml:"CdtrAgt,omitempty"`            // CreditorAgent is the financial institution of the creditor.
-	Creditor        pain.Party            `xml:"Cdtr,omitempty"`               // Creditor contains information about the party receiving the payment.
-	CreditorAccount pain.Account          `xml:"CdtrAcct,omitempty"`           // CreditorAccount represents the account of the creditor.
-	RemittanceInfo  RemittanceInformation `xml:"RmtInf,omitempty"`             // RemittanceInfo contains the remittance details.
+	PaymentID       pain.PaymentID        `xml:"PmtId,omitempty"`    // PaymentID contains payment identifiers like instruction ID.
+	PaymentTypeInfo pain.PaymentTypeInfo  `xml:"PmtTpInf,omitempty"` // PaymentTypeInfo is optional payment type information.
+	Amount          Amount                `xml:"Amt,omitempty"`      // Amount represents the instructed amount for the transfer.
+	CreditorAgent   FinancialInstitution  `xml:"CdtrAgt,omitempty"`  // CreditorAgent is the financial institution of the creditor.
+	Creditor        pain.Party            `xml:"Cdtr,omitempty"`     // Creditor contains information about the party receiving the payment.
+	CreditorAccount pain.Account          `xml:"CdtrAcct,omitempty"` // CreditorAccount represents the account of the creditor.
+	RemittanceInfo  RemittanceInformation `xml:"RmtInf,omitempty"`   // RemittanceInfo contains the remittance details.
 }
 
 // Amount represents the amount of money in a transaction.
 type Amount struct {
-	InstructedAmount decimal.Decimal `xml:",chardata,omitempty"` // InstructedAmount is the amount of money to be transferred.
-	Currency         string          `xml:"Ccy,attr,omitempty"`  // Currency defines the currency of the instructed amount.
+	InstructedAmount decimal.Decimal `xml:",chardata"`          // InstructedAmount is the amount of money to be transferred.
+	Currency         string          `xml:"Ccy,attr,omitempty"` // Currency defines the currency of the instructed amount.
 }
 
 // RemittanceInformation contains remittance details for the transaction.

@@ -23,6 +23,8 @@ type CustomerCreditTransferInitiation struct {
 type PaymentInfo struct {
 	PaymentInfoID             string                        `xml:"PmtInfId,omitempty"`    // PaymentInfoID is a unique identifier for the payment info block.
 	PaymentMethod             string                        `xml:"PmtMtd,omitempty"`      // PaymentMethod defines the payment method (e.g., TRF for Transfer).
+	NumberOfTransactions      int                           `xml:"NbOfTxs,omitempty"`     // NumberOfTransactions is the total number of transactions.
+	ControlSum                decimal.Decimal               `xml:"CtrlSum,omitempty"`     // ControlSum is the total amount for the transaction batch.
 	BatchBooking              bool                          `xml:"BtchBookg,omitempty"`   // BatchBooking defines whether batch booking is enabled.
 	PaymentTypeInfo           pain.PaymentTypeInfo          `xml:"PmtTpInf,omitempty"`    // PaymentTypeInfo provides additional payment type information.
 	RequestedExecutionDate    string                        `xml:"ReqdExctnDt,omitempty"` // RequestedExecutionDate is the date on which the payment should be executed.

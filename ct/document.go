@@ -49,7 +49,7 @@ type CreditTransferTransactionInfo struct {
 	PaymentID       pain.PaymentID        `xml:"PmtId,omitempty"`    // PaymentID contains payment identifiers like instruction ID.
 	PaymentTypeInfo pain.PaymentTypeInfo  `xml:"PmtTpInf,omitempty"` // PaymentTypeInfo is optional payment type information.
 	Amount          Amount                `xml:"Amt,omitempty"`      // Amount represents the instructed amount for the transfer.
-	CreditorAgent   FinancialInstitution  `xml:"CdtrAgt,omitempty"`  // CreditorAgent is the financial institution of the creditor.
+	CreditorAgent   *FinancialInstitution `xml:"CdtrAgt,omitempty"`  // CreditorAgent is the financial institution of the creditor.
 	Creditor        pain.Party            `xml:"Cdtr,omitempty"`     // Creditor contains information about the party receiving the payment.
 	CreditorAccount pain.Account          `xml:"CdtrAcct,omitempty"` // CreditorAccount represents the account of the creditor.
 	RemittanceInfo  RemittanceInformation `xml:"RmtInf,omitempty"`   // RemittanceInfo contains the remittance details.

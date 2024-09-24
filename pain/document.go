@@ -52,8 +52,8 @@ type AccountID struct {
 
 // Party represents the party that sends or receives the payment.
 type Party struct {
-	Name          string        `xml:"Nm,omitempty"`      // Name is the name of the debtor.
-	PostalAddress PostalAddress `xml:"PstlAdr,omitempty"` // PostalAddress contains the address of the debtor.
+	Name          string         `xml:"Nm,omitempty"`      // Name is the name of the debtor.
+	PostalAddress *PostalAddress `xml:"PstlAdr,omitempty"` // PostalAddress contains the address of the debtor.
 }
 
 // PostalAddress represents the postal address of the debtor or creditor.

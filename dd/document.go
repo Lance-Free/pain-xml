@@ -59,7 +59,7 @@ type DirectDebitTransaction struct {
 
 // FinancialInstitutionIdentification represents the identification of a financial institution.
 type FinancialInstitutionIdentification struct {
-	BICFI string `xml:"BICFI,omitempty"`
+	BIC string `xml:"BIC,omitempty"`
 }
 
 // DebtorAgent represents the debtor's financial institution identification.
@@ -89,7 +89,7 @@ type RemittanceInformation struct {
 // DirectDebitTransactionInformation represents information about a direct debit order.
 type DirectDebitTransactionInformation struct {
 	PaymentID              pain.PaymentID         `xml:"PmtId,omitempty"`
-	InstigatedAmount       InstigatedAmount       `xml:"InstdAmt,omitempty"`
+	InstigatedAmount       pain.InstigatedAmount  `xml:"InstdAmt,omitempty"`
 	DirectDebitTransaction DirectDebitTransaction `xml:"DrctDbtTx,omitempty"`
 	DebtorAgent            DebtorAgent            `xml:"DbtrAgt,omitempty"`
 	Debtor                 Debtor                 `xml:"Dbtr,omitempty"`
